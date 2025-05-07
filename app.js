@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const carsRoutes = require('./routes/cars');
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./graphql/schema');
 
 const app = express();
 
@@ -19,6 +21,11 @@ mongoose.connect('mongodb+srv://berezinv7930:emLZyWCTMMFKcEXD@cluster0.dxvvlnp.m
   });
 
 app.use('/cars', carsRoutes);
+
+app.use('/graphql', graphqlHTTP({
+    schema,
+    graphiql: true
+}));
 
 app.get('/', (req, res) => {
     res.redirect('/cars');
